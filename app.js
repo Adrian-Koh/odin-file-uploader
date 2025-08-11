@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => res.send("howdy!"));
+app.get("/file", (req, res) => res.render("file-upload-form"));
 
 // catch all errors
 app.use((err, req, res, next) => {
