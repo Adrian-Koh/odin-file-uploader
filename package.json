@@ -1,0 +1,29 @@
+{
+  "name": "odin-file-uploader",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adrian-Koh/odin-file-uploader.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Adrian-Koh/odin-file-uploader/issues"
+  },
+  "homepage": "https://github.com/Adrian-Koh/odin-file-uploader#readme",
+  "description": "",
+  "dependencies": {
+    "@quixo3/prisma-session-store": "^3.1.13",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "prisma": "^6.13.0"
+  }
+}
