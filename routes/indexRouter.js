@@ -2,7 +2,7 @@ const { Router } = require("express");
 const indexRouter = Router();
 const indexController = require("../controllers/indexController");
 
-app.get("/", indexController.indexGet);
-app.get("/file", indexController.uploadFileGet);
+indexRouter.get("/", indexController.indexGet);
+indexRouter.get("/upload", indexController.uploadFileGet);
 
 module.exports = indexRouter;

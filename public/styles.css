@@ -1,8 +1,42 @@
 body {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .content {
   width: 500px;
+}
+
+.nav-bar {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  gap: 20px;
+}
+
+.nav-link,
+.nav-link:visited {
+  color: green;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: solid 2px green;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input[type="submit"] {
+  width: min-content;
+  align-self: last baseline;
 }

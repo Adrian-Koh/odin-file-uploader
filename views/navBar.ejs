@@ -1,8 +1,8 @@
 <% if (locals.links) { %>
 <nav>
-  <ul>
+  <ul class="nav-bar">
     <% for (const link of links) { %>
-    <li><a href="<%= link.href %>"><%= link.text %></a></li>
+    <li><a class="nav-link" href="<%= link.href %>"><%= link.text %></a></li>
     <% } %>
   </ul>
 </nav>
