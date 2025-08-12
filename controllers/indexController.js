@@ -16,10 +16,21 @@ function uploadFileGet(req, res) {
   res.render("file-upload-form", { links });
 }
 
-function uploadFilePost(req, res) {
-  console.log("path: " + path.join(req.savedPath, req.savedFileName));
+async function uploadFilePost(req, res) {
+  try {
+    const savedFilePath = path.join(req.savedPath, req.savedFileName);
+    const prisma = new PrismaClient();
+    const file = await prisma.file.create({
+      data: {
+        userId: req.user.id,
+        path: savedFilePath,
+      },
+    });
 
-  res.redirect("/");
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
 }
 
 function loginGet(req, res) {
