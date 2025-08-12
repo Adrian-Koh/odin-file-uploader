@@ -13,17 +13,26 @@ function indexGet(req, res) {
   res.render("index", { links });
 }
 
-function uploadFileGet(req, res) {
-  res.render("formContainer", {
-    title: "Upload file",
-    formName: "upload",
-    // todo: provide folder id as option values
-    folders: [{ path: "/home/Documents", name: "Documents" }],
-    links,
-  });
+async function uploadFileGet(req, res, next) {
+  try {
+    const prisma = new PrismaClient();
+    const folders = await prisma.folder.findMany({
+      where: {
+        userId: req.user.id,
+      },
+    });
+    res.render("formContainer", {
+      title: "Upload file",
+      formName: "upload",
+      folders,
+      links,
+    });
+  } catch (err) {
+    next(err);
+  }
 }
 
-async function uploadFilePost(req, res) {
+async function uploadFilePost(req, res, next) {
   try {
     const savedFilePath = path.join(req.savedPath, req.savedFileName);
     const prisma = new PrismaClient();
@@ -31,7 +40,8 @@ async function uploadFilePost(req, res) {
       data: {
         userId: req.user.id,
         path: savedFilePath,
-        // TODO: add folder id if provided
+        folderId: folder === "novalue" ? null : folder,
+        // TODO: save file in folder
       },
     });
 
@@ -59,7 +69,7 @@ async function newFolderPost(req, res) {
         userId: req.user.id,
       },
     });
-
+    // TODO: create folder in filesystem
     res.redirect("/");
   } catch (err) {
     next(err);

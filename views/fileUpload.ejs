@@ -7,7 +7,7 @@
   <select name="folder" id="folder">
     <option value="novalue" selected>Select folder...</option>
     <% for (const folder of folders) { %>
-    <option value="<%= folder.path %>"><%= folder.name %></option>
+    <option value="<%= folder.id %>"><%= folder.name %></option>
     <% } %>
   </select>
   <% } %>
