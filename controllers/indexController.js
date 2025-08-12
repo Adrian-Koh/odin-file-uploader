@@ -13,4 +13,12 @@ function uploadFileGet(req, res) {
   res.render("file-upload-form", { links });
 }
 
-module.exports = { indexGet, uploadFileGet };
+function loginGet(req, res) {
+  res.render("login", { links });
+}
+
+function signupGet(req, res) {
+  res.render("signup", { links });
+}
+
+module.exports = { indexGet, uploadFileGet, loginGet, signupGet };
