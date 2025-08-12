@@ -1,5 +1,6 @@
 const { PrismaClient } = require("../generated/prisma");
 const { createPasswordHash } = require("../lib/passwordUtils");
+const path = require("node:path");
 const links = [
   { href: "/", text: "Home" },
   { href: "/login", text: "Log In" },
@@ -13,6 +14,12 @@ function indexGet(req, res) {
 
 function uploadFileGet(req, res) {
   res.render("file-upload-form", { links });
+}
+
+function uploadFilePost(req, res) {
+  console.log("path: " + path.join(req.savedPath, req.savedFileName));
+
+  res.redirect("/");
 }
 
 function loginGet(req, res) {
@@ -40,4 +47,11 @@ async function signupPost(req, res, next) {
   }
 }
 
-module.exports = { indexGet, uploadFileGet, loginGet, signupGet, signupPost };
+module.exports = {
+  indexGet,
+  uploadFileGet,
+  uploadFilePost,
+  loginGet,
+  signupGet,
+  signupPost,
+};
