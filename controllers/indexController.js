@@ -17,6 +17,7 @@ function uploadFileGet(req, res) {
   res.render("formContainer", {
     title: "Upload file",
     formName: "upload",
+    // todo: provide folder id as option values
     folders: [{ path: "/home/Documents", name: "Documents" }],
     links,
   });
@@ -30,6 +31,7 @@ async function uploadFilePost(req, res) {
       data: {
         userId: req.user.id,
         path: savedFilePath,
+        // TODO: add folder id if provided
       },
     });
 
@@ -47,9 +49,21 @@ function newFolderGet(req, res) {
   });
 }
 
-function newFolderPost(req, res) {
-  const { folder } = req.body;
+async function newFolderPost(req, res) {
+  try {
+    const { folder } = req.body;
+    const prisma = new PrismaClient();
+    const createdFolder = await prisma.folder.create({
+      data: {
+        name: folder,
+        userId: req.user.id,
+      },
+    });
 
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
   res.redirect("/");
 }
 
