@@ -7,6 +7,7 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 //const { PrismaClient } = require("@prisma/client");
 const { PrismaClient } = require("./generated/prisma");
 const passport = require("passport");
+const indexRouter = require("./routes/indexRouter");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,8 +40,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => res.send("howdy!"));
-app.get("/file", (req, res) => res.render("file-upload-form"));
+app.use("/", indexRouter);
 
 // catch all errors
 app.use((err, req, res, next) => {
