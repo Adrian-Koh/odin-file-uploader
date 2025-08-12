@@ -15,9 +15,9 @@ datasource db {
 }
 
 model Session {
-  id        String   @id
-  sid       String   @unique
-  data      String   
+  id          String     @id
+  sid         String    @unique
+  data        String   
   expiresAt   DateTime
 }
 
@@ -26,11 +26,21 @@ model User {
   username      String  @unique
   passwordHash  String
   files         File[]
+  folders       Folder[]
 }
 
 model File {
-  id      Int      @id @default(autoincrement())
-  path    String   
-  user    User     @relation(fields: [userId], references: [id])
-  userId  Int      @unique
+  id        Int      @id @default(autoincrement())
+  path      String   
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @unique
+  folder    Folder?  @relation(fields: [folderId], references: [id])
+  folderId  Int?
+}
+
+model Folder {
+  id      Int       @id @default(autoincrement())
+  files   File[]
+  user    User      @relation(fields: [userId], references: [id])
+  userId  Int       @unique
 }

@@ -6,6 +6,7 @@ const links = [
   { href: "/login", text: "Log In" },
   { href: "/signup", text: "Sign Up" },
   { href: "/upload", text: "Upload File" },
+  { href: "/new-folder", text: "New folder" },
 ];
 
 function indexGet(req, res) {
@@ -13,7 +14,12 @@ function indexGet(req, res) {
 }
 
 function uploadFileGet(req, res) {
-  res.render("file-upload-form", { links });
+  res.render("formContainer", {
+    title: "Upload file",
+    formName: "upload",
+    folders: [{ path: "/home/Documents", name: "Documents" }],
+    links,
+  });
 }
 
 async function uploadFilePost(req, res) {
@@ -33,12 +39,26 @@ async function uploadFilePost(req, res) {
   }
 }
 
+function newFolderGet(req, res) {
+  res.render("formContainer", {
+    title: "New folder",
+    formName: "folder",
+    links,
+  });
+}
+
+function newFolderPost(req, res) {
+  const { folder } = req.body;
+
+  res.redirect("/");
+}
+
 function loginGet(req, res) {
-  res.render("login", { links });
+  res.render("formContainer", { title: "Log In", formName: "login", links });
 }
 
 function signupGet(req, res) {
-  res.render("signup", { links });
+  res.render("formContainer", { title: "Sign Up", formName: "signup", links });
 }
 
 async function signupPost(req, res, next) {
@@ -62,6 +82,8 @@ module.exports = {
   indexGet,
   uploadFileGet,
   uploadFilePost,
+  newFolderGet,
+  newFolderPost,
   loginGet,
   signupGet,
   signupPost,
