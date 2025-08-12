@@ -44,8 +44,8 @@ app.use("/", indexRouter);
 
 // catch all errors
 app.use((err, req, res, next) => {
-  res.status(500);
-  res.send(err);
+  console.error(err.stack);
+  res.status(500).send(err.message);
 });
 
 const PORT = 8000;

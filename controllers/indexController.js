@@ -1,13 +1,9 @@
 const { PrismaClient } = require("../generated/prisma");
 const { createPasswordHash } = require("../lib/passwordUtils");
 const path = require("node:path");
-const links = [
-  { href: "/", text: "Home" },
-  { href: "/login", text: "Log In" },
-  { href: "/signup", text: "Sign Up" },
-  { href: "/upload", text: "Upload File" },
-  { href: "/new-folder", text: "New folder" },
-];
+const { links } = require("../lib/navLinks");
+const fs = require("node:fs");
+const { DOWNLOAD_PATH } = require("../lib/multer");
 
 function indexGet(req, res) {
   res.render("index", { links });
@@ -59,9 +55,16 @@ function newFolderGet(req, res) {
   });
 }
 
-async function newFolderPost(req, res) {
+async function newFolderPost(req, res, next) {
   try {
     const { folder } = req.body;
+
+    if (fs.existsSync(path.join(DOWNLOAD_PATH, folder))) {
+      throw new Error(
+        `Folder ${path.join(DOWNLOAD_PATH, folder)} already exists.`
+      );
+    }
+
     const prisma = new PrismaClient();
     const createdFolder = await prisma.folder.create({
       data: {
@@ -69,12 +72,11 @@ async function newFolderPost(req, res) {
         userId: req.user.id,
       },
     });
-    // TODO: create folder in filesystem
+    fs.mkdirSync(path.join(DOWNLOAD_PATH, folder));
     res.redirect("/");
   } catch (err) {
     next(err);
   }
-  res.redirect("/");
 }
 
 function loginGet(req, res) {
