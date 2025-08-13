@@ -30,14 +30,31 @@ async function uploadFileGet(req, res, next) {
 
 async function uploadFilePost(req, res, next) {
   try {
-    const savedFilePath = path.join(req.savedPath, req.savedFileName);
+    let savedFilePath = path.join(req.savedPath, req.savedFileName);
     const prisma = new PrismaClient();
+
+    if (req.body.folder !== "novalue") {
+      const folder = await prisma.folder.findUnique({
+        where: {
+          id: parseInt(req.body.folder),
+        },
+      });
+      const newFilePath = path.join(
+        req.savedPath,
+        folder.name,
+        req.savedFileName
+      );
+
+      fs.renameSync(savedFilePath, newFilePath);
+      savedFilePath = newFilePath;
+    }
+
     const file = await prisma.file.create({
       data: {
         userId: req.user.id,
         path: savedFilePath,
-        folderId: folder === "novalue" ? null : folder,
-        // TODO: save file in folder
+        folderId:
+          req.body.folder === "novalue" ? null : parseInt(req.body.folder),
       },
     });
 
