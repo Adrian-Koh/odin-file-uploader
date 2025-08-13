@@ -1,5 +1,4 @@
 const { PrismaClient } = require("../generated/prisma");
-const { createPasswordHash } = require("../lib/passwordUtils");
 const path = require("node:path");
 const { links } = require("../lib/navLinks");
 const fs = require("node:fs");
@@ -96,38 +95,10 @@ async function newFolderPost(req, res, next) {
   }
 }
 
-function loginGet(req, res) {
-  res.render("formContainer", { title: "Log In", formName: "login", links });
-}
-
-function signupGet(req, res) {
-  res.render("formContainer", { title: "Sign Up", formName: "signup", links });
-}
-
-async function signupPost(req, res, next) {
-  try {
-    const { username, password } = req.body;
-    const prisma = new PrismaClient();
-    const user = await prisma.user.create({
-      data: {
-        username: username,
-        passwordHash: await createPasswordHash(password),
-      },
-    });
-
-    res.redirect("/login");
-  } catch (err) {
-    next(err);
-  }
-}
-
 module.exports = {
   indexGet,
   uploadFileGet,
   uploadFilePost,
   newFolderGet,
   newFolderPost,
-  loginGet,
-  signupGet,
-  signupPost,
 };
