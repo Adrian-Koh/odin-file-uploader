@@ -27,8 +27,18 @@ async function signupPost(req, res, next) {
   }
 }
 
+function logOutGet(req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+}
+
 module.exports = {
   loginGet,
   signupGet,
   signupPost,
+  logOutGet,
 };
