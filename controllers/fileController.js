@@ -43,10 +43,15 @@ async function uploadFilePost(req, res, next) {
       savedFilePath = newFilePath;
     }
 
+    const stats = fs.statSync(savedFilePath);
+    const fileSizeInBytes = stats.size;
+
     const file = await prisma.file.create({
       data: {
         userId: req.user.id,
-        path: savedFilePath,
+        name: req.savedFileName,
+        uploadTime: new Date(),
+        fileSize: fileSizeInBytes,
         folderId:
           req.body.folder === "novalue" ? null : parseInt(req.body.folder),
       },

@@ -21,7 +21,7 @@ async function signupPost(req, res, next) {
       },
     });
 
-    res.redirect("/login");
+    res.redirect("/user/login");
   } catch (err) {
     next(err);
   }

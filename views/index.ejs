@@ -17,11 +17,11 @@
         <li><a href="/folder/<%= folder.id %>"><%= folder.name %></a></li>
         <% } %>
       </ul>
-      <% } %> <% if (locals.files) { %>
+      <% } if (locals.files) { %>
       <h2>Files</h2>
       <ul>
         <% for (const file of files) { %>
-        <li><%= file.path %></li>
+        <li><%= file.name %></li>
         <% } %>
       </ul>
       <% } %>
