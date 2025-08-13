@@ -9,6 +9,7 @@ const passport = require("passport");
 const indexRouter = require("./routes/indexRouter");
 const userRouter = require("./routes/userRouter");
 const folderRouter = require("./routes/folderRouter");
+const fileRouter = require("./routes/fileRouter");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/folder", folderRouter);
+app.use("/file", fileRouter);
 
 // catch all errors
 app.use((err, req, res, next) => {
