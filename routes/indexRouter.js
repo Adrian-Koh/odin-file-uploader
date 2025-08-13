@@ -12,7 +12,5 @@ indexRouter.post(
   upload.single("file"),
   indexController.uploadFilePost
 );
-indexRouter.get("/new-folder", isAuthenticated, indexController.newFolderGet);
-indexRouter.post("/new-folder", isAuthenticated, indexController.newFolderPost);
 
 module.exports = indexRouter;

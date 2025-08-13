@@ -2,10 +2,29 @@ const { PrismaClient } = require("../generated/prisma");
 const path = require("node:path");
 const { links } = require("../lib/navLinks");
 const fs = require("node:fs");
-const { DOWNLOAD_PATH } = require("../lib/multer");
 
-function indexGet(req, res) {
-  res.render("index", { links });
+async function indexGet(req, res) {
+  try {
+    let folders = null;
+    let filesWithNoFolder = null;
+    if (req.user) {
+      const prisma = new PrismaClient();
+      folders = await prisma.folder.findMany({
+        where: {
+          userId: req.user.id,
+        },
+      });
+      filesWithNoFolder = await prisma.file.findMany({
+        where: {
+          userId: req.user.id,
+          folder: null,
+        },
+      });
+    }
+    res.render("index", { links, folders, files: filesWithNoFolder });
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function uploadFileGet(req, res, next) {
@@ -63,42 +82,8 @@ async function uploadFilePost(req, res, next) {
   }
 }
 
-function newFolderGet(req, res) {
-  res.render("formContainer", {
-    title: "New folder",
-    formName: "folder",
-    links,
-  });
-}
-
-async function newFolderPost(req, res, next) {
-  try {
-    const { folder } = req.body;
-
-    if (fs.existsSync(path.join(DOWNLOAD_PATH, folder))) {
-      throw new Error(
-        `Folder ${path.join(DOWNLOAD_PATH, folder)} already exists.`
-      );
-    }
-
-    const prisma = new PrismaClient();
-    const createdFolder = await prisma.folder.create({
-      data: {
-        name: folder,
-        userId: req.user.id,
-      },
-    });
-    fs.mkdirSync(path.join(DOWNLOAD_PATH, folder));
-    res.redirect("/");
-  } catch (err) {
-    next(err);
-  }
-}
-
 module.exports = {
   indexGet,
   uploadFileGet,
   uploadFilePost,
-  newFolderGet,
-  newFolderPost,
 };

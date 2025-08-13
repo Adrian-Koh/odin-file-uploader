@@ -4,20 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles.css" />
-    <title>Home</title>
+    <title><%= folder.name %></title>
   </head>
   <body>
     <%- include('navBar', links); %>
     <div class="content">
-      <h1>Welcome to File Uploader!</h1>
-      <% if (locals.folders) { %>
-      <h2>Folders</h2>
-      <ul>
-        <% for (const folder of folders) { %>
-        <li><a href="/folder/<%= folder.id %>"><%= folder.name %></a></li>
-        <% } %>
-      </ul>
-      <% } %> <% if (locals.files) { %>
+      <h1><%= folder.name %></h1>
+      <% if (locals.files) { %>
       <h2>Files</h2>
       <ul>
         <% for (const file of files) { %>
