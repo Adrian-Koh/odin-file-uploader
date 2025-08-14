@@ -72,7 +72,21 @@ async function fileDetailsGet(req, res, next) {
         id: parseInt(fileId),
       },
     });
-    res.render("fileDetails", { links, file });
+
+    let fileSizeString;
+
+    if (file.fileSize / 1024 < 1) {
+      fileSizeString = file.fileSize + "B";
+    } else if (file.fileSize / Math.pow(1024, 2) < 1) {
+      fileSizeString = Math.round((file.fileSize / 1024) * 100) / 100 + "KB";
+    } else if (file.fileSize / Math.pow(1024, 3) < 1) {
+      fileSizeString =
+        Math.round((file.fileSize / Math.pow(1024, 2)) * 100) / 100 + "MB";
+    } else {
+      fileSizeString =
+        Math.round((file.fileSize / Math.pow(1024, 3)) * 100) / 100 + "GB";
+    }
+    res.render("fileDetails", { links, file: { ...file, fileSizeString } });
   } catch (err) {
     next(err);
   }

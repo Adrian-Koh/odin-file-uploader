@@ -49,3 +49,32 @@ input[type="submit"] {
 label {
   text-align: right;
 }
+
+.details-link,
+.details-link:visited {
+  text-decoration: none;
+  color: rgb(18, 108, 182);
+  border: solid 2px rgb(18, 108, 182);
+  border-radius: 3px;
+  padding: 3px;
+  margin-left: 15px;
+}
+
+.list-item {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.folder-link,
+.folder-link:visited {
+  text-decoration: none;
+  color: rgb(146, 115, 14);
+  border: solid 2px rgb(146, 115, 14);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}

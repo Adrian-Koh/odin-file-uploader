@@ -14,16 +14,20 @@
       <h2>Folders</h2>
       <ul>
         <% for (const folder of folders) { %>
-        <li><a href="/folder/<%= folder.id %>"><%= folder.name %></a></li>
+        <li class="list-item">
+          <a class="folder-link" href="/folder/<%= folder.id %>"
+            ><%= folder.name %></a
+          >
+        </li>
         <% } %>
       </ul>
       <% } if (locals.files) { %>
       <h2>Files</h2>
       <ul>
         <% for (const file of files) { %>
-        <li>
+        <li class="list-item">
           <span><%= file.name %></span
-          ><a href="/file/<%= file.id %>">Details</a>
+          ><a class="details-link" href="/file/<%= file.id %>">Details</a>
         </li>
         <% } %>
       </ul>

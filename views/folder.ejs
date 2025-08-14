@@ -14,9 +14,9 @@
       <h2>Files</h2>
       <ul>
         <% for (const file of files) { %>
-        <li>
+        <li class="list-item">
           <span><%= file.name %></span
-          ><a href="/file/<%= file.id %>">Details</a>
+          ><a class="details-link" href="/file/<%= file.id %>">Details</a>
         </li>
         <% } %>
       </ul>
