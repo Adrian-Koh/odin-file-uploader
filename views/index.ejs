@@ -21,6 +21,8 @@
             ><img src="/folder.svg" alt="folder" class="folder-icon" /><%=
             folder.name %></a
           >
+          <a href="/folder/edit/<%= folder.id %>">Edit</a>
+          <a href="/folder/delete/<%= folder.id %>">Delete</a>
         </li>
         <% } %>
       </ul>
