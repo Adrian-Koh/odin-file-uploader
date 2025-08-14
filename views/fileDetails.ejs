@@ -16,6 +16,7 @@
           Upload time: <%= `${new Date(file.uploadTime).toLocaleDateString()}
           ${new Date(file.uploadTime).toLocaleTimeString()}` %>
         </li>
+        <li><a href="/file/download/<%= file.id %>">Download</a></li>
       </ul>
     </div>
   </body>

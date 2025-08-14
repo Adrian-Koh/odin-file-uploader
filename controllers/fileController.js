@@ -2,6 +2,7 @@ const { PrismaClient } = require("../generated/prisma");
 const path = require("node:path");
 const { links } = require("../lib/navLinks");
 const fs = require("node:fs");
+const { DOWNLOAD_PATH } = require("../lib/multer");
 
 async function uploadFileGet(req, res, next) {
   try {
@@ -92,8 +93,38 @@ async function fileDetailsGet(req, res, next) {
   }
 }
 
+async function fileDownloadGet(req, res, next) {
+  const { fileId } = req.params;
+  const prisma = new PrismaClient();
+  const file = await prisma.file.findUnique({
+    where: {
+      id: parseInt(fileId),
+    },
+  });
+
+  let filePathOnDisk;
+  if (file.folderId) {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: parseInt(file.folderId),
+      },
+    });
+    filePathOnDisk = path.join(DOWNLOAD_PATH, folder.name, file.name);
+  } else {
+    filePathOnDisk = path.join(DOWNLOAD_PATH, file.name);
+  }
+
+  res.download(filePathOnDisk, (err) => {
+    if (err) {
+      console.error("Error downloading file:", err);
+      res.status(500).send("Error downloading file."); // TODO: error page
+    }
+  });
+}
+
 module.exports = {
   uploadFileGet,
   uploadFilePost,
   fileDetailsGet,
+  fileDownloadGet,
 };
