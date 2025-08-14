@@ -101,19 +101,7 @@ async function fileDownloadGet(req, res, next) {
       id: parseInt(fileId),
     },
   });
-
-  let filePathOnDisk;
-  if (file.folderId) {
-    const folder = await prisma.folder.findUnique({
-      where: {
-        id: parseInt(file.folderId),
-      },
-    });
-    filePathOnDisk = path.join(DOWNLOAD_PATH, folder.name, file.name);
-  } else {
-    filePathOnDisk = path.join(DOWNLOAD_PATH, file.name);
-  }
-
+  const filePathOnDisk = await getFilePathOnDisk(prisma, file);
   res.download(filePathOnDisk, (err) => {
     if (err) {
       console.error("Error downloading file:", err);
@@ -130,7 +118,22 @@ async function fileDeleteGet(req, res, next) {
       id: parseInt(fileId),
     },
   });
-  // todo: delete file from filesystem
+  const filePathOnDisk = await getFilePathOnDisk(prisma, file);
+  fs.unlinkSync(filePathOnDisk);
+  res.redirect("/");
+}
+
+async function getFilePathOnDisk(prisma, file) {
+  if (file.folderId) {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: parseInt(file.folderId),
+      },
+    });
+    return path.join(DOWNLOAD_PATH, folder.name, file.name);
+  } else {
+    return path.join(DOWNLOAD_PATH, file.name);
+  }
 }
 
 module.exports = {
