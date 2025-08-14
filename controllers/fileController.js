@@ -122,9 +122,21 @@ async function fileDownloadGet(req, res, next) {
   });
 }
 
+async function fileDeleteGet(req, res, next) {
+  const { fileId } = req.params;
+  const prisma = new PrismaClient();
+  const file = await prisma.file.delete({
+    where: {
+      id: parseInt(fileId),
+    },
+  });
+  // todo: delete file from filesystem
+}
+
 module.exports = {
   uploadFileGet,
   uploadFilePost,
   fileDetailsGet,
   fileDownloadGet,
+  fileDeleteGet,
 };

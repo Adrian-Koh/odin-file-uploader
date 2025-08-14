@@ -17,5 +17,10 @@ fileRouter.get(
   isAuthenticated,
   fileController.fileDownloadGet
 );
+fileRouter.get(
+  "/delete/:fileId",
+  isAuthenticated,
+  fileController.fileDeleteGet
+);
 
 module.exports = fileRouter;
