@@ -10,13 +10,17 @@
     <%- include('navBar', links); %>
     <div class="content">
       <h1><%= file.name %></h1>
-      <ul>
-        <li>Size: <%= file.fileSizeString %></li>
-        <li>
+      <ul class="file-details">
+        <li class="file-size">Size: <%= file.fileSizeString %></li>
+        <li class="file-time">
           Upload time: <%= `${new Date(file.uploadTime).toLocaleDateString()}
           ${new Date(file.uploadTime).toLocaleTimeString()}` %>
         </li>
-        <li><a href="/file/download/<%= file.id %>">Download</a></li>
+        <li class="file-download">
+          <a href="/file/download/<%= file.id %>">
+            <img class="download-icon" src="/download.svg" alt="download"
+          /></a>
+        </li>
       </ul>
     </div>
   </body>
