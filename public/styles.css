@@ -86,6 +86,18 @@ label {
 
 .folder-card {
   border: solid 2px rgb(146, 115, 14);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, min-content);
+  gap: 10px;
+}
+
+.action-icons {
+  justify-self: center;
+}
+
+.action-icons a {
+  text-decoration: none;
 }
 
 .file-card {
@@ -106,8 +118,8 @@ label {
   gap: 10px;
 }
 
-.download-icon {
-  width: 30px;
+.action-icon {
+  width: 20px;
   height: auto;
   margin-left: auto;
   border: solid 2px black;
