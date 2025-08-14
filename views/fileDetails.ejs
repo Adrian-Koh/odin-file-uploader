@@ -4,23 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles.css" />
-    <title><%= folder.name %></title>
+    <title><%= file.name %></title>
   </head>
   <body>
     <%- include('navBar', links); %>
     <div class="content">
-      <h1><%= folder.name %></h1>
-      <% if (locals.files) { %>
-      <h2>Files</h2>
+      <h1><%= file.name %></h1>
       <ul>
-        <% for (const file of files) { %>
+        <li>Size: <%= file.fileSize %>B</li>
         <li>
-          <span><%= file.name %></span
-          ><a href="/file/<%= file.id %>">Details</a>
+          Upload time: <%= `${new Date(file.uploadTime).toLocaleDateString()}
+          ${new Date(file.uploadTime).toLocaleTimeString()}` %>
         </li>
-        <% } %>
       </ul>
-      <% } %>
     </div>
   </body>
 </html>

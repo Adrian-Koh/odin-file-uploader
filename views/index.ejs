@@ -21,7 +21,10 @@
       <h2>Files</h2>
       <ul>
         <% for (const file of files) { %>
-        <li><%= file.name %></li>
+        <li>
+          <span><%= file.name %></span
+          ><a href="/file/<%= file.id %>">Details</a>
+        </li>
         <% } %>
       </ul>
       <% } %>

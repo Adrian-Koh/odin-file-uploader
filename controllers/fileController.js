@@ -63,7 +63,23 @@ async function uploadFilePost(req, res, next) {
   }
 }
 
+async function fileDetailsGet(req, res, next) {
+  try {
+    const { fileId } = req.params;
+    const prisma = new PrismaClient();
+    const file = await prisma.file.findUnique({
+      where: {
+        id: parseInt(fileId),
+      },
+    });
+    res.render("fileDetails", { links, file });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   uploadFileGet,
   uploadFilePost,
+  fileDetailsGet,
 };

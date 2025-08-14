@@ -11,5 +11,6 @@ fileRouter.post(
   upload.single("file"),
   fileController.uploadFilePost
 );
+fileRouter.get("/:fileId", isAuthenticated, fileController.fileDetailsGet);
 
 module.exports = fileRouter;
