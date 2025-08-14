@@ -1,11 +1,11 @@
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.content {
+  width: 500px;
 }
 
-.content {
-  width: 400px;
+body,
+.content,
+.details-link,
+.folder-link {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,9 +13,12 @@ body {
 
 .nav-bar {
   display: flex;
+  gap: 20px;
+}
+
+ul {
   list-style-type: none;
   padding: 0;
-  gap: 20px;
 }
 
 .nav-link,
@@ -50,31 +53,55 @@ label {
   text-align: right;
 }
 
+.details-link {
+  text-decoration: none;
+  text-align: center;
+  gap: 5px;
+}
+
 .details-link,
 .details-link:visited {
-  text-decoration: none;
   color: rgb(18, 108, 182);
-  border: solid 2px rgb(18, 108, 182);
-  border-radius: 3px;
-  padding: 3px;
-  margin-left: 15px;
 }
 
 .list-item {
   font-size: 1.2rem;
-  margin-bottom: 10px;
+}
+
+.folder-link {
+  text-decoration: none;
+  text-align: center;
 }
 
 .folder-link,
 .folder-link:visited {
-  text-decoration: none;
   color: rgb(146, 115, 14);
-  border: solid 2px rgb(146, 115, 14);
-  border-radius: 5px;
-  padding: 5px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.folder-card,
+.file-card {
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.folder-card {
+  border: solid 2px rgb(146, 115, 14);
+}
+
+.file-card {
+  border: solid 2px rgb(18, 108, 182);
+}
+
+.folder-icon,
+.file-icon {
+  width: 50px;
+  height: auto;
+}
+
+.folders,
+.files {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
 }
