@@ -1,4 +1,4 @@
-const { PrismaClient } = require("../generated/prisma");
+const { prisma } = require("../lib/prisma");
 const { createPasswordHash } = require("../lib/passwordUtils");
 const { links } = require("../lib/navLinks");
 
@@ -13,7 +13,7 @@ function signupGet(req, res) {
 async function signupPost(req, res, next) {
   try {
     const { username, password } = req.body;
-    const prisma = new PrismaClient();
+
     const user = await prisma.user.create({
       data: {
         username: username,

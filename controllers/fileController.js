@@ -1,12 +1,11 @@
-const { PrismaClient } = require("../generated/prisma");
 const path = require("node:path");
 const { links } = require("../lib/navLinks");
 const fs = require("node:fs");
 const { DOWNLOAD_PATH } = require("../lib/multer");
+const { prisma } = require("../lib/prisma");
 
 async function uploadFileGet(req, res, next) {
   try {
-    const prisma = new PrismaClient();
     const folders = await prisma.folder.findMany({
       where: {
         userId: req.user.id,
@@ -26,7 +25,6 @@ async function uploadFileGet(req, res, next) {
 async function uploadFilePost(req, res, next) {
   try {
     let savedFilePath = path.join(req.savedPath, req.savedFileName);
-    const prisma = new PrismaClient();
 
     if (req.body.folder !== "novalue") {
       const folder = await prisma.folder.findUnique({
@@ -67,7 +65,6 @@ async function uploadFilePost(req, res, next) {
 async function fileDetailsGet(req, res, next) {
   try {
     const { fileId } = req.params;
-    const prisma = new PrismaClient();
     const file = await prisma.file.findUnique({
       where: {
         id: parseInt(fileId),
@@ -95,7 +92,6 @@ async function fileDetailsGet(req, res, next) {
 
 async function fileDownloadGet(req, res, next) {
   const { fileId } = req.params;
-  const prisma = new PrismaClient();
   const file = await prisma.file.findUnique({
     where: {
       id: parseInt(fileId),
@@ -112,7 +108,6 @@ async function fileDownloadGet(req, res, next) {
 
 async function fileDeleteGet(req, res, next) {
   const { fileId } = req.params;
-  const prisma = new PrismaClient();
   const file = await prisma.file.delete({
     where: {
       id: parseInt(fileId),

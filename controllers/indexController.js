@@ -1,4 +1,4 @@
-const { PrismaClient } = require("../generated/prisma");
+const { prisma } = require("../lib/prisma");
 const { links } = require("../lib/navLinks");
 
 async function indexGet(req, res, next) {
@@ -6,7 +6,6 @@ async function indexGet(req, res, next) {
     let folders = null;
     let files = null;
     if (req.user) {
-      const prisma = new PrismaClient();
       folders = await prisma.folder.findMany({
         where: {
           userId: req.user.id,
