@@ -1,3 +1,9 @@
+:root {
+  --folder-color: rgb(104, 201, 26);
+  --file-color: rgb(18, 108, 182);
+  --file-details-color: rgb(150, 30, 150);
+}
+
 .content {
   width: 500px;
 }
@@ -21,15 +27,18 @@ ul {
   padding: 0;
 }
 
-.nav-link,
-.nav-link:visited {
-  color: green;
+.nav-link {
   text-decoration: none;
   font-size: 1.5rem;
   font-weight: 600;
   border: solid 2px green;
   border-radius: 5px;
   padding: 5px;
+}
+
+.nav-link,
+.nav-link:visited {
+  color: green;
 }
 
 h1 {
@@ -57,11 +66,18 @@ label {
   text-decoration: none;
   text-align: center;
   gap: 5px;
+  font-weight: 600;
+}
+
+.file-card {
+  background-color: var(--file-color);
 }
 
 .details-link,
-.details-link:visited {
-  color: rgb(18, 108, 182);
+.details-link:visited,
+.folder-link,
+.folder-link:visited {
+  color: white;
 }
 
 .list-item {
@@ -71,11 +87,7 @@ label {
 .folder-link {
   text-decoration: none;
   text-align: center;
-}
-
-.folder-link,
-.folder-link:visited {
-  color: rgb(146, 115, 14);
+  font-weight: 600;
 }
 
 .folder-card,
@@ -85,11 +97,11 @@ label {
 }
 
 .folder-card {
-  border: solid 2px rgb(146, 115, 14);
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(2, min-content);
   gap: 10px;
+  background-color: var(--folder-color);
 }
 
 .action-icons {
@@ -98,10 +110,6 @@ label {
 
 .action-icons a {
   text-decoration: none;
-}
-
-.file-card {
-  border: solid 2px rgb(18, 108, 182);
 }
 
 .folder-icon,
@@ -132,6 +140,10 @@ label {
   grid-template-columns: max-content min-content;
   grid-auto-rows: min-content;
   gap: 10px;
+  background-color: var(--file-details-color);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .file-size {
@@ -146,4 +158,11 @@ label {
 
 .file-download {
   grid-row: 1 / 2;
+}
+
+.folder-icon,
+.file-icon,
+.action-icon {
+  filter: invert(94%) sepia(100%) saturate(2%) hue-rotate(271deg)
+    brightness(111%) contrast(101%);
 }
