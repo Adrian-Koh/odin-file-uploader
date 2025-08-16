@@ -151,6 +151,7 @@ label {
   grid-template-columns: max-content;
   gap: 20px;
   background-color: var(--file-color);
+  box-shadow: 2px 2px 5px 2px lightblue;
   color: white;
   padding: 10px;
   border-radius: 10px;

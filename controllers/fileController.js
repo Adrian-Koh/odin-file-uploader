@@ -82,6 +82,17 @@ async function fileDetailsGet(req, res, next) {
       },
     });
 
+    let folderName = "No folder";
+    if (file.folderId) {
+      const folder = await prisma.folder.findUnique({
+        where: {
+          id: parseInt(file.folderId),
+        },
+      });
+
+      folderName = "Folder: " + folder.name;
+    }
+
     let fileSizeString;
 
     if (file.fileSize / 1024 < 1) {
@@ -97,7 +108,7 @@ async function fileDetailsGet(req, res, next) {
     }
     res.render("fileDetails", {
       links: req.links,
-      file: { ...file, fileSizeString },
+      file: { ...file, fileSizeString, folderName },
     });
   } catch (err) {
     next(err);
