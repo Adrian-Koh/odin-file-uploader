@@ -7,7 +7,7 @@ userRouter.get("/login", userController.loginGet);
 userRouter.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "/file/upload", // TODO: error page
+    failureRedirect: "/failed-auth",
     successRedirect: "/",
   })
 );

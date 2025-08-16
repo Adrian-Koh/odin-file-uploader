@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Error</title>
+  </head>
+  <body>
+    <%- include('navBar', links); %>
+    <div class="content">
+      <% if (locals.error) { %>
+      <h1><%= error.name %></h1>
+      <p><%= error.message %></p>
+      <% if (error.status) { %>
+      <p>Status: <%= error.status %></p>
+      <% } } %>
+    </div>
+  </body>
+</html>

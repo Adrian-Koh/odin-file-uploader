@@ -25,6 +25,11 @@ async function indexGet(req, res, next) {
   }
 }
 
+function failedAuthGet(req, res) {
+  res.render("failedAuth", { links });
+}
+
 module.exports = {
   indexGet,
+  failedAuthGet,
 };

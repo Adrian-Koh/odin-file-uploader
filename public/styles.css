@@ -126,7 +126,6 @@ label {
 .action-icon {
   width: 20px;
   height: auto;
-  margin-left: auto;
   border: solid 2px black;
   border-radius: 5px;
   padding: 5px;
@@ -135,7 +134,6 @@ label {
 .file-details {
   display: grid;
   grid-template-columns: max-content;
-  grid-auto-rows: max-content;
   gap: 20px;
   background-color: var(--file-details-color);
   color: white;

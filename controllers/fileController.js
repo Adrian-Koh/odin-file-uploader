@@ -112,8 +112,7 @@ async function fileDownloadGet(req, res, next) {
   const filePathOnDisk = await getFilePathOnDisk(prisma, file);
   res.download(filePathOnDisk, (err) => {
     if (err) {
-      console.error("Error downloading file:", err);
-      res.status(500).send("Error downloading file."); // TODO: error page
+      next(err);
     }
   });
 }
