@@ -1,6 +1,22 @@
 :root {
   --folder-color: rgb(104, 201, 26);
   --file-color: rgb(18, 108, 182);
+  --nav-color: rgb(221, 202, 31);
+}
+
+html {
+  background: linear-gradient(
+    to right,
+    rgba(69, 150, 164, 1) 2.5%,
+    rgba(17, 20, 34, 1) 100.3%
+  );
+  color: white;
+  /* background-image: linear-gradient(
+    111.1deg,
+    rgba(69, 150, 164, 1) 2.5%,
+    rgba(17, 20, 34, 1) 100.3%
+  );
+  background-repeat: no-repeat; */
 }
 
 .content {
@@ -33,14 +49,14 @@ ul {
 .nav-link {
   font-size: 1.5rem;
   font-weight: 600;
-  border: solid 2px green;
+  border: solid 2px var(--nav-color);
   border-radius: 5px;
   padding: 5px;
 }
 
 .nav-link,
 .nav-link:visited {
-  color: green;
+  color: var(--nav-color);
 }
 
 h1 {
