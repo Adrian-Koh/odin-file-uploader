@@ -1,5 +1,4 @@
 const { prisma } = require("../lib/prisma");
-const { getLinks } = require("../lib/navLinks");
 
 async function indexGet(req, res, next) {
   try {
@@ -20,7 +19,7 @@ async function indexGet(req, res, next) {
     }
 
     res.render("index", {
-      links: getLinks(req.isAuthenticated()),
+      links: req.links,
       folders,
       files,
     });
@@ -29,8 +28,8 @@ async function indexGet(req, res, next) {
   }
 }
 
-function failedAuthGet(req, res) {
-  res.render("failedAuth", { links: getLinks(false) });
+function failedAuthGet(req, res, next) {
+  res.render("failedAuth", { links: req.links });
 }
 
 module.exports = {

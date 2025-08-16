@@ -1,12 +1,11 @@
 const { prisma } = require("../lib/prisma");
 const { createPasswordHash } = require("../lib/passwordUtils");
-const { getLinks } = require("../lib/navLinks");
 
 function loginGet(req, res) {
   res.render("formContainer", {
     title: "Log In",
     formName: "login",
-    links: getLinks(req.isAuthenticated()),
+    links: req.links,
   });
 }
 
@@ -14,7 +13,7 @@ function signupGet(req, res) {
   res.render("formContainer", {
     title: "Sign Up",
     formName: "signup",
-    links: getLinks(req.isAuthenticated()),
+    links: req.links,
   });
 }
 

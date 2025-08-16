@@ -1,6 +1,5 @@
 const { prisma } = require("../lib/prisma");
 const path = require("node:path");
-const { getLinks } = require("../lib/navLinks");
 const fs = require("node:fs");
 const { DOWNLOAD_PATH } = require("../lib/multer");
 
@@ -8,7 +7,7 @@ function newFolderGet(req, res) {
   res.render("formContainer", {
     title: "New folder",
     formName: "folder",
-    links: getLinks(req.isAuthenticated()),
+    links: req.links,
     postLink: "/folder/new",
   });
 }
@@ -52,7 +51,7 @@ async function folderGet(req, res) {
   res.render("folder", {
     folder,
     files,
-    links: getLinks(req.isAuthenticated()),
+    links: req.links,
   });
 }
 
@@ -81,7 +80,7 @@ async function editFolderGet(req, res, next) {
   res.render("formContainer", {
     title: "Update folder",
     formName: "folder",
-    links: getLinks(req.isAuthenticated()),
+    links: req.links,
     postLink: "/folder/edit/" + folderId,
     folderName: folder.name,
   });

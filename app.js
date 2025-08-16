@@ -54,7 +54,9 @@ app.use((err, req, res, next) => {
   err.message = err.message || "Something went wrong!";
   err.status = err.status || 500;
 
-  res.render("error", { links: getLinks(req.isAuthenticated()), error: err });
+  getLinks(req, res, () => {
+    res.render("error", { links: req.links, error: err });
+  });
 });
 
 const PORT = 8000;

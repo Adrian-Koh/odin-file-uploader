@@ -1,5 +1,4 @@
 const path = require("node:path");
-const { getLinks } = require("../lib/navLinks");
 const fs = require("node:fs");
 const { DOWNLOAD_PATH } = require("../lib/multer");
 const { prisma } = require("../lib/prisma");
@@ -16,7 +15,7 @@ async function uploadFileGet(req, res, next) {
       title: "Upload file",
       formName: "upload",
       folders,
-      links: getLinks(req.isAuthenticated()),
+      links: req.links,
     });
   } catch (err) {
     next(err);
@@ -97,7 +96,7 @@ async function fileDetailsGet(req, res, next) {
         Math.round((file.fileSize / Math.pow(1024, 3)) * 100) / 100 + "GB";
     }
     res.render("fileDetails", {
-      links: getLinks(req.isAuthenticated()),
+      links: req.links,
       file: { ...file, fileSizeString },
     });
   } catch (err) {
