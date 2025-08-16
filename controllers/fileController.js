@@ -3,6 +3,8 @@ const { links } = require("../lib/navLinks");
 const fs = require("node:fs");
 const { DOWNLOAD_PATH } = require("../lib/multer");
 const { prisma } = require("../lib/prisma");
+const { supabase } = require("../lib/supabase");
+const { log } = require("node:console");
 
 async function uploadFileGet(req, res, next) {
   try {
@@ -55,6 +57,17 @@ async function uploadFilePost(req, res, next) {
           req.body.folder === "novalue" ? null : parseInt(req.body.folder),
       },
     });
+
+    const fileContent = fs.readFileSync(savedFilePath, "utf-8");
+
+    const { data, error } = await supabase.storage
+      .from("File Uploader App")
+      .upload(req.savedFileName, fileContent, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+    console.log("data: " + JSON.stringify(data));
+    console.log("error: " + JSON.stringify(error));
 
     res.redirect("/");
   } catch (err) {
