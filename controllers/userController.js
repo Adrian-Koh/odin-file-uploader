@@ -1,13 +1,21 @@
 const { prisma } = require("../lib/prisma");
 const { createPasswordHash } = require("../lib/passwordUtils");
-const { links } = require("../lib/navLinks");
+const { getLinks } = require("../lib/navLinks");
 
 function loginGet(req, res) {
-  res.render("formContainer", { title: "Log In", formName: "login", links });
+  res.render("formContainer", {
+    title: "Log In",
+    formName: "login",
+    links: getLinks(req.isAuthenticated()),
+  });
 }
 
 function signupGet(req, res) {
-  res.render("formContainer", { title: "Sign Up", formName: "signup", links });
+  res.render("formContainer", {
+    title: "Sign Up",
+    formName: "signup",
+    links: getLinks(req.isAuthenticated()),
+  });
 }
 
 async function signupPost(req, res, next) {

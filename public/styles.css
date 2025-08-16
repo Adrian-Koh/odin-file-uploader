@@ -1,7 +1,6 @@
 :root {
   --folder-color: rgb(104, 201, 26);
   --file-color: rgb(18, 108, 182);
-  --file-details-color: rgb(150, 30, 150);
 }
 
 .content {
@@ -135,7 +134,7 @@ label {
   display: grid;
   grid-template-columns: max-content;
   gap: 20px;
-  background-color: var(--file-details-color);
+  background-color: var(--file-color);
   color: white;
   padding: 10px;
   border-radius: 10px;

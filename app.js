@@ -10,7 +10,7 @@ const indexRouter = require("./routes/indexRouter");
 const userRouter = require("./routes/userRouter");
 const folderRouter = require("./routes/folderRouter");
 const fileRouter = require("./routes/fileRouter");
-const { links } = require("./lib/navLinks");
+const { getLinks } = require("./lib/navLinks");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -54,7 +54,7 @@ app.use((err, req, res, next) => {
   err.message = err.message || "Something went wrong!";
   err.status = err.status || 500;
 
-  res.render("error", { links, error: err });
+  res.render("error", { links: getLinks(req.isAuthenticated()), error: err });
 });
 
 const PORT = 8000;
