@@ -16,14 +16,17 @@
           Upload time: <%= `${new Date(file.uploadTime).toLocaleDateString()}
           ${new Date(file.uploadTime).toLocaleTimeString()}` %>
         </li>
-        <li class="file-download">
-          <a href="/file/download/<%= file.id %>">
-            <img class="action-icon" src="/download.svg" alt="download-file"
+        <li class="file-icons">
+          <% if (file.url !== 'NONE') { %>
+          <a href="<%= file.url %>" target="_blank"
+            ><img class="action-icon" src="/open-in-new.svg" alt="file link"
           /></a>
-        </li>
-        <li class="file-delete">
+          <% } %>
+          <a href="/file/download/<%= file.id %>">
+            <img class="action-icon" src="/download.svg" alt="download file"
+          /></a>
           <a href="/file/delete/<%= file.id %>">
-            <img class="action-icon" src="/trash-can.svg" alt="delete-file"
+            <img class="action-icon" src="/trash-can.svg" alt="delete file"
           /></a>
         </li>
       </ul>

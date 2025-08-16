@@ -8,6 +8,10 @@
   width: 500px;
 }
 
+a {
+  text-decoration: none;
+}
+
 body,
 .content,
 .details-link,
@@ -28,7 +32,6 @@ ul {
 }
 
 .nav-link {
-  text-decoration: none;
   font-size: 1.5rem;
   font-weight: 600;
   border: solid 2px green;
@@ -63,7 +66,6 @@ label {
 }
 
 .details-link {
-  text-decoration: none;
   text-align: center;
   gap: 5px;
   font-weight: 600;
@@ -85,7 +87,6 @@ label {
 }
 
 .folder-link {
-  text-decoration: none;
   text-align: center;
   font-weight: 600;
 }
@@ -106,10 +107,6 @@ label {
 
 .action-icons {
   justify-self: center;
-}
-
-.action-icons a {
-  text-decoration: none;
 }
 
 .folder-icon,
@@ -137,27 +134,27 @@ label {
 
 .file-details {
   display: grid;
-  grid-template-columns: max-content min-content;
-  grid-auto-rows: min-content;
-  gap: 10px;
+  grid-template-columns: max-content;
+  grid-auto-rows: max-content;
+  gap: 20px;
   background-color: var(--file-details-color);
   color: white;
   padding: 10px;
   border-radius: 10px;
+  align-items: center;
+  font-size: 1.1rem;
 }
 
-.file-size {
-  grid-row: 1 / 2;
-  grid-column: 1 / 2;
+.file-link a,
+.file-link a:visited {
+  font-weight: 600;
+  color: white;
+  font-size: 1.2rem;
 }
 
-.file-time {
-  grid-row: 2 / 3;
-  grid-column: 1 / 2;
-}
-
-.file-download {
-  grid-row: 1 / 2;
+.file-icons {
+  display: flex;
+  justify-content: space-around;
 }
 
 .folder-icon,
