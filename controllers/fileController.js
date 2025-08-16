@@ -26,6 +26,7 @@ async function uploadFileGet(req, res, next) {
 async function uploadFilePost(req, res, next) {
   try {
     let savedFilePath = path.join(req.savedPath, req.savedFileName);
+    let folderName = null;
 
     if (req.body.folder !== "novalue") {
       const folder = await prisma.folder.findUnique({
@@ -41,14 +42,14 @@ async function uploadFilePost(req, res, next) {
 
       fs.renameSync(savedFilePath, newFilePath);
       savedFilePath = newFilePath;
+      folderName = folder.name;
     }
 
     const stats = fs.statSync(savedFilePath);
     const fileSizeInBytes = stats.size;
 
-    const fileContent = fs.readFileSync(savedFilePath, "utf-8");
+    const fileContent = fs.readFileSync(savedFilePath);
 
-    let folderName = req.body.folder === "novalue" ? null : req.body.folder;
     const fileUrl = await uploadFile(
       req.savedFileName,
       fileContent,
@@ -63,8 +64,7 @@ async function uploadFilePost(req, res, next) {
         fileSize: fileSizeInBytes,
         folderId:
           req.body.folder === "novalue" ? null : parseInt(req.body.folder),
-
-        // todo: add foldername to db
+        url: fileUrl,
       },
     });
 
