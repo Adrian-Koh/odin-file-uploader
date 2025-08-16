@@ -3,8 +3,7 @@ const { links } = require("../lib/navLinks");
 const fs = require("node:fs");
 const { DOWNLOAD_PATH } = require("../lib/multer");
 const { prisma } = require("../lib/prisma");
-const { supabase } = require("../lib/supabase");
-const { log } = require("node:console");
+const { uploadFile } = require("../lib/supabase");
 
 async function uploadFileGet(req, res, next) {
   try {
@@ -47,6 +46,15 @@ async function uploadFilePost(req, res, next) {
     const stats = fs.statSync(savedFilePath);
     const fileSizeInBytes = stats.size;
 
+    const fileContent = fs.readFileSync(savedFilePath, "utf-8");
+
+    let folderName = req.body.folder === "novalue" ? null : req.body.folder;
+    const fileUrl = await uploadFile(
+      req.savedFileName,
+      fileContent,
+      folderName
+    );
+
     const file = await prisma.file.create({
       data: {
         userId: req.user.id,
@@ -55,19 +63,10 @@ async function uploadFilePost(req, res, next) {
         fileSize: fileSizeInBytes,
         folderId:
           req.body.folder === "novalue" ? null : parseInt(req.body.folder),
+
+        // todo: add foldername to db
       },
     });
-
-    const fileContent = fs.readFileSync(savedFilePath, "utf-8");
-
-    const { data, error } = await supabase.storage
-      .from("File Uploader App")
-      .upload(req.savedFileName, fileContent, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-    console.log("data: " + JSON.stringify(data));
-    console.log("error: " + JSON.stringify(error));
 
     res.redirect("/");
   } catch (err) {
