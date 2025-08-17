@@ -16,7 +16,7 @@
           Upload time: <%= `${new Date(file.uploadTime).toLocaleDateString()}
           ${new Date(file.uploadTime).toLocaleTimeString()}` %>
         </li>
-        <li><%= file.folderName %></li>
+        <li><%= file.folderNameString %></li>
         <li class="file-icons">
           <% if (file.url !== 'NONE') { %>
           <a href="<%= file.url %>" target="_blank"

@@ -2,7 +2,7 @@ const path = require("node:path");
 const fs = require("node:fs");
 const { DOWNLOAD_PATH } = require("../lib/multer");
 const { prisma } = require("../lib/prisma");
-const { uploadFile, downloadFile } = require("../lib/supabase");
+const { uploadFile, downloadFile, deleteFile } = require("../lib/supabase");
 
 async function uploadFileGet(req, res, next) {
   try {
@@ -73,22 +73,8 @@ async function uploadFilePost(req, res, next) {
 async function fileDetailsGet(req, res, next) {
   try {
     const { fileId } = req.params;
-    const file = await prisma.file.findUnique({
-      where: {
-        id: parseInt(fileId),
-      },
-    });
-
-    let folderName = "No folder";
-    if (file.folderId) {
-      const folder = await prisma.folder.findUnique({
-        where: {
-          id: parseInt(file.folderId),
-        },
-      });
-
-      folderName = "Folder: " + folder.name;
-    }
+    const { file, folderName } = await getFilePath(fileId);
+    let folderNameString = folderName ? "Folder: " + folderName : "No folder";
 
     let fileSizeString;
 
@@ -105,7 +91,7 @@ async function fileDetailsGet(req, res, next) {
     }
     res.render("fileDetails", {
       links: req.links,
-      file: { ...file, fileSizeString, folderName },
+      file: { ...file, fileSizeString, folderNameString },
     });
   } catch (err) {
     next(err);
@@ -115,23 +101,9 @@ async function fileDetailsGet(req, res, next) {
 async function fileDownloadGet(req, res, next) {
   try {
     const { fileId } = req.params;
-    const file = await prisma.file.findUnique({
-      where: {
-        id: parseInt(fileId),
-      },
-    });
+    const { file, folderName } = await getFilePath(fileId);
 
-    let folder = null;
-    if (file.folderId) {
-      const folderObj = await prisma.folder.findUnique({
-        where: {
-          id: parseInt(file.folderId),
-        },
-      });
-      folder = folderObj.name;
-    }
-
-    const blob = await downloadFile(file.name, folder);
+    const blob = await downloadFile(file.name, folderName);
     if (!fs.existsSync(DOWNLOAD_PATH)) {
       fs.mkdirSync(DOWNLOAD_PATH);
     }
@@ -157,14 +129,36 @@ async function fileDownloadGet(req, res, next) {
 
 async function fileDeleteGet(req, res, next) {
   const { fileId } = req.params;
-  const file = await prisma.file.delete({
+  const { file, folderName } = await getFilePath(fileId);
+
+  await deleteFile(file.name, folderName);
+
+  await prisma.file.delete({
     where: {
       id: parseInt(fileId),
     },
   });
-  const filePathOnDisk = await getFilePathOnDisk(prisma, file);
-  fs.unlinkSync(filePathOnDisk);
-  res.redirect("/");
+
+  await res.redirect("/");
+}
+
+async function getFilePath(fileId) {
+  const file = await prisma.file.findUnique({
+    where: {
+      id: parseInt(fileId),
+    },
+  });
+
+  let folderName = null;
+  if (file.folderId) {
+    const folder = await prisma.folder.findUnique({
+      where: {
+        id: parseInt(file.folderId),
+      },
+    });
+    folderName = folder.name;
+  }
+  return { file, folderName };
 }
 
 async function getFilePathOnDisk(prisma, file) {
