@@ -2,7 +2,7 @@ const path = require("node:path");
 const fs = require("node:fs");
 const { DOWNLOAD_PATH } = require("../lib/multer");
 const { prisma } = require("../lib/prisma");
-const { uploadFile } = require("../lib/supabase");
+const { uploadFile, downloadFile } = require("../lib/supabase");
 
 async function uploadFileGet(req, res, next) {
   try {
@@ -62,6 +62,7 @@ async function uploadFilePost(req, res, next) {
 
     // delete file in filesystem after upload
     fs.unlinkSync(savedFilePath);
+    fs.rmdirSync(DOWNLOAD_PATH);
 
     res.redirect("/");
   } catch (err) {
@@ -112,18 +113,46 @@ async function fileDetailsGet(req, res, next) {
 }
 
 async function fileDownloadGet(req, res, next) {
-  const { fileId } = req.params;
-  const file = await prisma.file.findUnique({
-    where: {
-      id: parseInt(fileId),
-    },
-  });
-  const filePathOnDisk = await getFilePathOnDisk(prisma, file);
-  res.download(filePathOnDisk, (err) => {
-    if (err) {
-      next(err);
+  try {
+    const { fileId } = req.params;
+    const file = await prisma.file.findUnique({
+      where: {
+        id: parseInt(fileId),
+      },
+    });
+
+    let folder = null;
+    if (file.folderId) {
+      const folderObj = await prisma.folder.findUnique({
+        where: {
+          id: parseInt(file.folderId),
+        },
+      });
+      folder = folderObj.name;
     }
-  });
+
+    const blob = await downloadFile(file.name, folder);
+    if (!fs.existsSync(DOWNLOAD_PATH)) {
+      fs.mkdirSync(DOWNLOAD_PATH);
+    }
+    const filePath = path.join(DOWNLOAD_PATH, file.name);
+
+    const buffer = Buffer.from(await blob.arrayBuffer());
+    fs.writeFileSync(filePath, buffer);
+
+    res.download(filePath, (err) => {
+      try {
+        if (err) {
+          next(err);
+        }
+      } finally {
+        fs.unlinkSync(filePath);
+        fs.rmdirSync(DOWNLOAD_PATH);
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function fileDeleteGet(req, res, next) {
