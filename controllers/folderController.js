@@ -16,19 +16,13 @@ async function newFolderPost(req, res, next) {
   try {
     const { folder } = req.body;
 
-    if (fs.existsSync(path.join(DOWNLOAD_PATH, folder))) {
-      throw new Error(
-        `Folder ${path.join(DOWNLOAD_PATH, folder)} already exists.`
-      );
-    }
-
     const createdFolder = await prisma.folder.create({
       data: {
         name: folder,
         userId: req.user.id,
       },
     });
-    fs.mkdirSync(path.join(DOWNLOAD_PATH, folder));
+
     res.redirect("/");
   } catch (err) {
     next(err);
@@ -57,16 +51,17 @@ async function folderGet(req, res) {
 
 async function folderDeleteGet(req, res, next) {
   const { folderId } = req.params;
-  const files = await prisma.file.deleteMany({
+  await prisma.file.deleteMany({
     where: {
       folderId: parseInt(folderId),
     },
   });
-  const folder = await prisma.folder.delete({
+  await prisma.folder.delete({
     where: {
       id: parseInt(folderId),
     },
   });
+  // todo: delete folder on supabase
   res.redirect("/");
 }
 
@@ -91,18 +86,12 @@ async function editFolderPost(req, res, next) {
     const { folder } = req.body;
     const { folderId } = req.params;
 
-    if (fs.existsSync(path.join(DOWNLOAD_PATH, folder))) {
-      throw new Error(
-        `Folder ${path.join(DOWNLOAD_PATH, folder)} already exists.`
-      );
-    }
-
-    const originalFolder = await prisma.folder.findUnique({
+    await prisma.folder.findUnique({
       where: {
         id: parseInt(folderId),
       },
     });
-    const createdFolder = await prisma.folder.update({
+    await prisma.folder.update({
       where: {
         id: parseInt(folderId),
       },
@@ -111,10 +100,7 @@ async function editFolderPost(req, res, next) {
       },
     });
 
-    fs.renameSync(
-      path.join(DOWNLOAD_PATH, originalFolder.name),
-      path.join(DOWNLOAD_PATH, folder)
-    );
+    // todo: rename folder on supabase
     res.redirect("/");
   } catch (err) {
     next(err);

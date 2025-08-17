@@ -33,14 +33,7 @@ async function uploadFilePost(req, res, next) {
           id: parseInt(req.body.folder),
         },
       });
-      const newFilePath = path.join(
-        req.savedPath,
-        folder.name,
-        req.savedFileName
-      );
 
-      fs.renameSync(savedFilePath, newFilePath);
-      savedFilePath = newFilePath;
       folderName = folder.name;
     }
 
@@ -66,6 +59,9 @@ async function uploadFilePost(req, res, next) {
         url: fileUrl,
       },
     });
+
+    // delete file in filesystem after upload
+    fs.unlinkSync(savedFilePath);
 
     res.redirect("/");
   } catch (err) {
