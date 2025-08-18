@@ -1,5 +1,5 @@
 const { prisma } = require("../lib/prisma");
-const { deleteFolder, editFolder } = require("../lib/supabase");
+const { deleteFolder, editFolder, getFileUrl } = require("../lib/supabase");
 
 function newFolderGet(req, res) {
   res.render("formContainer", {
@@ -104,7 +104,25 @@ async function editFolderPost(req, res, next) {
 
     await editFolder(oldName, folder);
 
-    // todo: update url on files
+    // update url of files
+    const files = await prisma.file.findMany({
+      where: {
+        folderId: parseInt(folderId),
+      },
+    });
+
+    for (const file of files) {
+      let filePath = `${folder}/${file.name}`;
+      let fileUrl = getFileUrl(filePath);
+      await prisma.file.update({
+        where: {
+          id: parseInt(file.id),
+        },
+        data: {
+          url: fileUrl,
+        },
+      });
+    }
 
     res.redirect("/");
   } catch (err) {
