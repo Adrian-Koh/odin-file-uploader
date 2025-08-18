@@ -161,19 +161,6 @@ async function getFilePath(fileId) {
   return { file, folderName };
 }
 
-async function getFilePathOnDisk(prisma, file) {
-  if (file.folderId) {
-    const folder = await prisma.folder.findUnique({
-      where: {
-        id: parseInt(file.folderId),
-      },
-    });
-    return path.join(DOWNLOAD_PATH, folder.name, file.name);
-  } else {
-    return path.join(DOWNLOAD_PATH, file.name);
-  }
-}
-
 module.exports = {
   uploadFileGet,
   uploadFilePost,

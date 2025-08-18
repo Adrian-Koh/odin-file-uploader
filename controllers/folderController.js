@@ -1,7 +1,5 @@
 const { prisma } = require("../lib/prisma");
-const path = require("node:path");
-const fs = require("node:fs");
-const { DOWNLOAD_PATH } = require("../lib/multer");
+const { deleteFolder, editFolder } = require("../lib/supabase");
 
 function newFolderGet(req, res) {
   res.render("formContainer", {
@@ -56,12 +54,14 @@ async function folderDeleteGet(req, res, next) {
       folderId: parseInt(folderId),
     },
   });
-  await prisma.folder.delete({
+  const deletedFolder = await prisma.folder.delete({
     where: {
       id: parseInt(folderId),
     },
   });
-  // todo: delete folder on supabase
+
+  await deleteFolder(deletedFolder.name);
+
   res.redirect("/");
 }
 
@@ -86,11 +86,13 @@ async function editFolderPost(req, res, next) {
     const { folder } = req.body;
     const { folderId } = req.params;
 
-    await prisma.folder.findUnique({
+    let folderObj = await prisma.folder.findUnique({
       where: {
         id: parseInt(folderId),
       },
     });
+    const oldName = folderObj.name;
+
     await prisma.folder.update({
       where: {
         id: parseInt(folderId),
@@ -100,7 +102,10 @@ async function editFolderPost(req, res, next) {
       },
     });
 
-    // todo: rename folder on supabase
+    await editFolder(oldName, folder);
+
+    // todo: update url on files
+
     res.redirect("/");
   } catch (err) {
     next(err);
